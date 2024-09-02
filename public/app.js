@@ -32,6 +32,7 @@ function App() {
             const probations = await fetch(`/api/probation/${this.selectedYear}/${this.selectedSemester}/${batch}`)
                 .then(res => res.json());
             this.index=3;
+            this.probations = probations;
         }
         // async getRecap(batch){
         //     const encodedBatch = encodeURIComponent(batch);

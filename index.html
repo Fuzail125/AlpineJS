@@ -51,13 +51,50 @@
         </div>
 
         <div x-show="index === 3" class="row mt-5">
+            <h3 class="font-bold text-lg">Students on Probation Batch Wise</h3>            
+            <div class="d-flex flex-wrap">
+                <template x-for="prob in probations">
+                    <div>
+                        <h5>Year: <span x-text="selectedYear"></span></h5>
+                        <h5>Semester: <span x-text="selectedSemester"></span></h5>
+                        <h5>Class: <span x-text="prob.class"></span></h5>
+                        <h5>Total Students: <span x-text="prob.total_students"></span></h5>
+                        <h5>Students on Probation: <span x-text="prob.students_on_probation"></span></h5>
+                        <h5>Probation Rate: <span x-text="prob.probation_rate"></span>%</h5>
+                    </div>
+                </template>
+            </div>
+        </div>
+            <!-- <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Total Students</th>
+                        <th>Students on Probation</th>
+                        <th>Probation Rate (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <p x-text="selectedYear"></p>
+                    <template x-for="prob in probations">
+                        <tr>
+                            <td x-text="prob.class"></td>
+                            <td x-text="prob.total_students"></td>
+                            <td x-text="prob.students_on_probation"></td>
+                            <td x-text="prob.probation_rate"></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table> -->
+
+        <!-- <div x-show="index === 3" class="row mt-5">
             <h3 class="font-bold text-lg">Recaps</h3></br>
             <template x-for="Recaps in recaps">
                 <div class="col">
                     <a href="#" x-text="Recaps.title" @click=""></a>
                 </div>
             </template>
-        </div>
+        </div> -->
         
     </div>
     

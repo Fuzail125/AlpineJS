@@ -37,43 +37,27 @@ router.get('/probation/:year/:semester/:batch', async(req, res) => {
         const probations = await sql `
         WITH student_avg_marks AS (
             SELECT
-                m.regno,
                 r.class,
                 AVG(m.marks) AS avg_marks
             FROM
                 marks m
-            JOIN recap r ON m.rid = r.rid
+            INNER JOIN recap r ON m.rid = r.rid
             WHERE
-                r.year = ${year}  
+                r.year = ${year}
                 AND r.semester = ${semester}
-                AND r.class = ${batch} 
+                AND r.class = ${batch}
             GROUP BY
-                m.regno, r.class
-        ),
-        probation_status AS (
-            SELECT
-                regno,
-                class,
-                CASE
-                    WHEN avg_marks < 50 THEN true
-                    ELSE false
-                END AS on_probation
-            FROM
-                student_avg_marks
+                r.class, m.regno
         )
         SELECT
             class,
             COUNT(*) AS total_students,
-            COUNT(CASE WHEN on_probation THEN true END) AS students_on_probation,
-            (COUNT(CASE WHEN on_probation THEN true END)::FLOAT / COUNT(*)) * 100 AS probation_rate
+            SUM(CASE WHEN avg_marks < 50 THEN 1 ELSE 0 END) AS students_on_probation,
+            ROUND((SUM(CASE WHEN avg_marks < 50 THEN 1 ELSE 0 END) * 100.0 / COUNT(*)), 2) AS probation_rate
         FROM
-            probation_status
+            student_avg_marks
         GROUP BY
-            class
-        ORDER BY
             class;
-
-
         ` ;
         res.status(200).json(probations);
     console.log(probations);
